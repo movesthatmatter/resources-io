@@ -119,11 +119,11 @@
     "typedoc": "^0.12.0",
     "typescript": "4.0.2"
   },
-  "peerDependencies": {
-    "fp-ts": "^2.11.5",
+  "peerDdependencies": {
+    "fp-ts": "^2.8.2",
     "io-ts": "2.2.10",
     "io-ts-reporters": "^2.0.0",
     "ts-async-results": "^0.2.0-0",
-    "ts-results": "^3.3.0"
+    "ts-results": "^3.0.0"
   }
 }
