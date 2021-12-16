@@ -119,7 +119,7 @@
     "typedoc": "^0.12.0",
     "typescript": "4.0.2"
   },
-  "dependencies": {
+  "peerDependencies": {
     "fp-ts": "^2.11.5",
     "io-ts": "2.2.10",
     "io-ts-reporters": "^2.0.0",

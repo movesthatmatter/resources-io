@@ -2991,11 +2991,6 @@ concat-stream@^1.5.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-conditional-type-checks@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/conditional-type-checks/-/conditional-type-checks-1.0.5.tgz#310ecd13c46c3963fbe9a2f8f93511d88cdcc973"
-  integrity sha512-DkfkvmjXVe4ye4llJ1JADtO3dNvqqcQM08cA9BhNt9Oe8pyRW8X1CZyBg9Qst05bDV9BJM01KLmnFh78NcJgNg==
-
 config-chain@^1.1.12:
   version "1.1.13"
   resolved "https://registry.yarnpkg.com/config-chain/-/config-chain-1.1.13.tgz#fad0795aa6a6cdaff9ed1b68e9dff94372c232f4"
@@ -4214,11 +4209,6 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-fp-ts@^2.11.5:
-  version "2.11.5"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.11.5.tgz#97cceb26655b1452d7088d6fb0864f84cceffbe4"
-  integrity sha512-OqlwJq1BdpB83BZXTqI+dNcA6uYk6qk4u9Cgnt64Y+XS7dwdbp/mobx8S2KXf2AXH+scNmA/UVK3SEFHR3vHZA==
-
 fragment-cache@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/fragment-cache/-/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
@@ -5070,16 +5060,6 @@ invert-kv@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
-
-io-ts-reporters@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/io-ts-reporters/-/io-ts-reporters-2.0.0.tgz#a7ae071b69a170c4d475d15bb93bfc964da6b04b"
-  integrity sha512-lcCD/Q77jcWjq7jBQb8nLfCU4DM/9hiQakYHNT1FLCA6kwMuHe0QEcugh27vrT3S5FoQDiWXq3ofaYR7GWAcOg==
-
-io-ts@2.2.10:
-  version "2.2.10"
-  resolved "https://registry.yarnpkg.com/io-ts/-/io-ts-2.2.10.tgz#447d02df51717464a90712b146ec8dbc21b4a74b"
-  integrity sha512-WHx5jJe7hPpc6JoSIVbD+Xn6tYqe3cRvNpX24d8Wi15/kxhRWa8apo0Gzag6Xg99sCNY9OHKylw/Vhv0JAbNPQ==
 
 ip-regex@^2.1.0:
   version "2.1.0"
@@ -10155,15 +10135,6 @@ trim-right@^1.0.1:
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
 
-ts-async-results@^0.2.0-0:
-  version "0.2.0-0"
-  resolved "https://registry.yarnpkg.com/ts-async-results/-/ts-async-results-0.2.0-0.tgz#53f55d65ed9016c6d166f5705ea802871b5ddb9a"
-  integrity sha512-rpErETjiPpiQ0gQI90rwIFrBlgJcD/OvSrOSuOwsaFIgGGMdmEG8utZQPrjKWM3sQbn2GTv4LJtzY8rtbyHjLQ==
-  dependencies:
-    conditional-type-checks "^1.0.5"
-    ts-results "^3.0.0"
-    tslib "^2.1.0"
-
 ts-jest@27.0.1:
   version "27.0.1"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-27.0.1.tgz#3cd174561c4bb311e0187a5837543fb858c60d16"
@@ -10194,11 +10165,6 @@ ts-node@^7.0.1:
     source-map-support "^0.5.6"
     yn "^2.0.0"
 
-ts-results@^3.0.0, ts-results@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/ts-results/-/ts-results-3.3.0.tgz#68623a6c18e65556287222dab76498a28154922f"
-  integrity sha512-FWqxGX2NHp5oCyaMd96o2y2uMQmSu8Dey6kvyuFdRJ2AzfmWo3kWa4UsPlCGlfQ/qu03m09ZZtppMoY8EMHuiA==
-
 tslib@1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
@@ -10213,11 +10179,6 @@ tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
-
-tslib@^2.1.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
-  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
 tslint-config-prettier@^1.15.0:
   version "1.18.0"
