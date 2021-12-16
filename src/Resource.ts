@@ -14,10 +14,11 @@ import {
   isBadRequestError,
   isPayloadOfCodec,
   isResourceFailureHandledError,
-  eitherToResult
+  eitherToResult,
+  isObject,
+  keyInObject
 } from './util'
 import errorReporter from 'io-ts-reporters'
-import { isObject, keyInObject } from '.'
 
 type BaseRequestPayloadCodec = io.Mixed
 type BaseResponseOkPayloadCodec = io.Mixed
