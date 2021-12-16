@@ -1,6 +1,6 @@
 {
   "name": "resources-io",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "keywords": [],
   "main": "dist/index.umd.js",
@@ -46,7 +46,9 @@
     }
   },
   "jest": {
-    "roots": ["<rootDir>/src"],
+    "roots": [
+      "<rootDir>/src"
+    ],
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
