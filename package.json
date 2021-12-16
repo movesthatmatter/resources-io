@@ -3,36 +3,22 @@
   "version": "0.0.3",
   "description": "",
   "keywords": [],
-  "main": "dist/index.umd.js",
-  "module": "dist/index.es5.js",
-  "typings": "dist/types/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "author": "Gabriel C. Troia <catalin.troia@gmail.com>",
   "repository": {
     "type": "git",
     "url": ""
   },
   "license": "MIT",
-  "engines": {
-    "node": ">=6.0.0"
-  },
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
-    "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
-    "start": "rollup -c rollup.config.ts -w",
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf dist",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
     "test:prod": "npm run lint && npm run test -- --no-cache",
-    "deploy-docs": "ts-node tools/gh-pages-publish",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "commit": "git-cz",
-    "semantic-release": "semantic-release",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once"
+    "prepublishOnly": "npm run build"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -103,13 +89,6 @@
     "prettier": "^1.14.3",
     "prompt": "^1.0.0",
     "replace-in-file": "^3.4.2",
-    "rimraf": "^2.6.2",
-    "rollup": "^0.67.0",
-    "rollup-plugin-commonjs": "^9.1.8",
-    "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "^0.18.0",
     "semantic-release": "^15.9.16",
     "shelljs": "^0.8.3",
     "travis-deploy-once": "^5.0.9",
@@ -118,15 +97,9 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
-    "typedoc": "^0.12.0",
-    "typescript": "4.0.2",
-    "fp-ts": "^2.8.2",
-    "io-ts": "2.2.10",
-    "io-ts-reporters": "^2.0.0",
-    "ts-async-results": "^0.2.0-0",
-    "ts-results": "^3.0.0"
+    "typescript": "4.0.2"
   },
-  "peerDependencies": {
+  "dependencies": {
     "fp-ts": "^2.8.2",
     "io-ts": "2.2.10",
     "io-ts-reporters": "^2.0.0",
