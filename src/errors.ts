@@ -47,7 +47,17 @@ export const resourceFailureHandledError = io.type({
   content: io.undefined
 })
 export type ResourceFailureHandledErrorCodec = typeof resourceFailureHandledError
-export type ResourceFailureHandledError = io.TypeOf<ResourceFailureHandledErrorCodec>
+export type ResourceFailureHandledError = io.TypeOf<
+  ResourceFailureHandledErrorCodec
+>
+
+export const resourceInexistentError = io.type({
+  type: io.literal('ResourceInexistent'),
+  content: io.undefined
+})
+
+export type ResourceInexistentErrorCodec = typeof resourceInexistentError
+export type ResourceInexistentError = io.TypeOf<ResourceInexistentErrorCodec>
 
 export const commonResponseErrors = io.union([
   badRequestError,
@@ -55,7 +65,8 @@ export const commonResponseErrors = io.union([
   badResponseError,
   networkError,
   badErrorEncodingError,
-  serverError
+  serverError,
+  resourceInexistentError
 ])
 
 export type CommonResponseErrors = io.TypeOf<typeof commonResponseErrors>
