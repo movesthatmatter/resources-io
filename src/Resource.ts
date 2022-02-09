@@ -39,18 +39,24 @@ type BaseResponseErrPayloadCodec =
     >
 
 const responseAsOkResult = <TDataCodec extends io.Mixed>(data: TDataCodec) =>
-  io.type({
-    ok: io.literal(true),
-    data
-  })
+  io.type(
+    {
+      ok: io.literal(true),
+      data
+    },
+    'ResponseAsOkResult'
+  )
 type ResponseAsOkResultCodec = ReturnType<typeof responseAsOkResult>
 type ResponseAsOkResult = io.TypeOf<ResponseAsOkResultCodec>
 
 const responseAsErrResult = <TErrCodec extends io.Mixed>(error: TErrCodec) =>
-  io.type({
-    ok: io.literal(false),
-    error
-  })
+  io.type(
+    {
+      ok: io.literal(false),
+      error
+    },
+    'ResponseAsErrorResult'
+  )
 type ResponseAsErrResultCodec = ReturnType<typeof responseAsErrResult>
 type ResponseAsErrResult = io.TypeOf<ResponseAsErrResultCodec>
 
@@ -60,7 +66,11 @@ const responseAsResult = <
 >(
   ok: TOkCodec,
   customErr: TErrCodec
-) => io.union([ok, io.union([responseAsErrResult(commonResponseErrors), customErr])])
+) =>
+  io.union(
+    [ok, io.union([responseAsErrResult(commonResponseErrors), customErr])],
+    'ResponseAsResult'
+  )
 
 type ResponseAsResultCodec = ReturnType<typeof responseAsResult>
 type ResponseAsResult = io.TypeOf<ResponseAsResultCodec>
@@ -80,88 +90,97 @@ export class Resource<
   ) {}
 
   private get allPossibleErrorsCodec() {
-    return io.union([commonResponseErrors, this.responseErrPayloadCodec])
+    return io.union(
+      [commonResponseErrors, this.responseErrPayloadCodec],
+      'AllPossibleErrors'
+    )
   }
 
   request(
     requestPayload: RequestPayload,
     senderFn: (requestPayload: RequestPayload) => Promise<{ data: unknown }>
   ) {
-    return new AsyncResultWrapper<ResponseOkPayload, CommonResponseErrors | ResponseErrPayload>(
-      async () => {
-        try {
-          const { data } = await senderFn(requestPayload)
+    return new AsyncResultWrapper<
+      ResponseOkPayload,
+      CommonResponseErrors | ResponseErrPayload
+    >(async () => {
+      try {
+        const { data } = await senderFn(requestPayload)
 
-          const responseAsResultCodec = responseAsResult(
-            io.type({
-              ok: io.literal(true),
-              data: this.responseOkPayloadCodec
-            }),
-            io.type({
-              ok: io.literal(false),
-              error: this.allPossibleErrorsCodec
-            })
-          )
+        const responseAsResultCodec = responseAsResult(
+          io.type({
+            ok: io.literal(true),
+            data: this.responseOkPayloadCodec
+          }),
+          io.type({
+            ok: io.literal(false),
+            error: this.allPossibleErrorsCodec
+          })
+        )
 
-          const decoded = responseAsResultCodec.decode(data)
-          const result = eitherToResult(decoded)
+        const decoded = responseAsResultCodec.decode(data)
+        const result = eitherToResult(decoded)
 
-          if (!result.ok) {
-            const errorReport = errorReporter.report(decoded)
-            const error = new Err({
-              type: 'BadEncodingError',
-              content: errorReport
-            } as const)
-
-            console.error('[Resource].request() BadEncodingError', error)
-            console.info('  [Resource].request() BadEncodingError > Error', errorReport)
-
-            return error
-          }
-
-          if (!result.val.ok) {
-            const error = this.getResponseError(result.val)
-
-            console.error('[Resource].request() Response Error', error)
-            console.info('  [Resource].request() Response Error > Result', result)
-
-            return error
-          }
-
-          return new Ok(result.val.data)
-        } catch (e) {
-          // TODO: This is tied to the AXIOS payload, which isn't good!
-          //  It should at most use fetch or have it dynamically loaded by the requester somehow
-          //  Or somehow adhere to a certin interface!
-          if (
-            isObject(e) &&
-            keyInObject(e, 'response') &&
-            isObject(e.response) &&
-            keyInObject(e.response, 'data')
-          ) {
-            const error = this.getResponseError(e.response.data)
-
-            console.error('[Resource].request() Response Error', error)
-            console.info('[Resource].request() Response Error Object', e)
-
-            return error
-          }
-
+        if (!result.ok) {
+          const errorReport = errorReporter.report(decoded)
           const error = new Err({
-            type: 'BadRequestError',
-            content: undefined
+            type: 'BadEncodingError',
+            content: errorReport
           } as const)
 
-          console.error('[Resource].request() BadRequestError', error)
-          console.info('[Resource].request() BadRequestError', error)
+          console.error('[Resource].request() BadEncodingError', error)
+          console.info(
+            '  [Resource].request() BadEncodingError > Error',
+            errorReport
+          )
 
           return error
         }
+
+        if (!result.val.ok) {
+          const error = this.getResponseError(result.val)
+
+          console.error('[Resource].request() Response Error', error)
+          console.info('  [Resource].request() Response Error > Result', result)
+
+          return error
+        }
+
+        return new Ok(result.val.data)
+      } catch (e) {
+        // TODO: This is tied to the AXIOS payload, which isn't good!
+        //  It should at most use fetch or have it dynamically loaded by the requester somehow
+        //  Or somehow adhere to a certin interface!
+        if (
+          isObject(e) &&
+          keyInObject(e, 'response') &&
+          isObject(e.response) &&
+          keyInObject(e.response, 'data')
+        ) {
+          const error = this.getResponseError(e.response.data)
+
+          console.error('[Resource].request() Response Error', error)
+          console.info('[Resource].request() Response Error Object', e)
+
+          return error
+        }
+
+        const error = new Err({
+          type: 'BadRequestError',
+          content: undefined
+        } as const)
+
+        console.error('[Resource].request() BadRequestError', error)
+        console.info('[Resource].request() BadRequestError', error)
+
+        return error
       }
-    )
+    })
   }
 
-  private getResponseError = (e: unknown): Err<CommonResponseErrors | ResponseErrPayload> => {
+  private getResponseError = (
+    e: unknown
+  ): Err<CommonResponseErrors | ResponseErrPayload> => {
     const customErrorResult = eitherToResult(
       responseAsErrResult(this.allPossibleErrorsCodec).decode(e)
     )
@@ -192,7 +211,10 @@ export class Resource<
     )
   }
 
-  respond(data: ResponseOkPayload, senderFn: (responseResult: ResponseAsOkResult) => void) {
+  respond(
+    data: ResponseOkPayload,
+    senderFn: (responseResult: ResponseAsOkResult) => void
+  ) {
     // TODO: Should we serialize/encode the data before sending?
     senderFn({
       ok: true,
@@ -203,7 +225,9 @@ export class Resource<
   fail(
     error: ResponseErrPayload | CommonResponseErrors,
     senderFn: (errPayload: ResponseAsErrResult) => void
-  ): AsyncErr<ResourceFailureHandledError | ResponseErrPayload | CommonResponseErrors> {
+  ): AsyncErr<
+    ResourceFailureHandledError | ResponseErrPayload | CommonResponseErrors
+  > {
     try {
       // TODO: Should we serialize/encode the data before sending?
       senderFn({

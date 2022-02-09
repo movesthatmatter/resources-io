@@ -1,11 +1,5 @@
 import * as io from 'io-ts'
-import {
-  HttpError,
-  HttpErrorCodec,
-  HttpGenericError,
-  httpGenericError,
-  HttpGenericErrorCodec
-} from './httpErrors'
+import { HttpErrorCodec } from './httpErrors'
 
 export const httpRequestPayload = <TData extends io.Mixed>(data: TData) =>
   io.type({
@@ -13,8 +7,9 @@ export const httpRequestPayload = <TData extends io.Mixed>(data: TData) =>
     data
   })
 
-export const httpRequestPayloadFromProps = <TProps extends io.Props>(props: TProps) =>
-  httpRequestPayload(io.type(props))
+export const httpRequestPayloadFromProps = <TProps extends io.Props>(
+  props: TProps
+) => httpRequestPayload(io.type(props))
 
 export const anyHttpRequestPayload = io.type({
   protocol: io.literal('http'),
@@ -34,11 +29,16 @@ export const okHttpResponsePayload = <TData extends io.Mixed>(data: TData) =>
     data
   })
 
-export const okHttpResponsePayloadFromProps = <TProps extends io.Props>(props: TProps) =>
-  okHttpResponsePayload(io.type(props))
+export const okHttpResponsePayloadFromProps = <TProps extends io.Props>(
+  props: TProps
+) => okHttpResponsePayload(io.type(props))
 
-export type GenericOkHttpResponsePayloadCodec = ReturnType<typeof okHttpResponsePayload>
-export type GenericOkHttpResponsePayload = io.TypeOf<GenericOkHttpResponsePayloadCodec>
+export type GenericOkHttpResponsePayloadCodec = ReturnType<
+  typeof okHttpResponsePayload
+>
+export type GenericOkHttpResponsePayload = io.TypeOf<
+  GenericOkHttpResponsePayloadCodec
+>
 
 // export const anyOkHttpResponsePayload = io.type({
 //   protocol: io.literal('http'),
@@ -64,10 +64,16 @@ export const errHttpResponsePayload = <TErr extends io.Mixed>(error: TErr) =>
 //   props: TProps,
 // ) => errHttpResponsePayload(io.type(props));
 
-export type GenericErrHttpResponsePayloadCodec = ReturnType<typeof errHttpResponsePayload>
-export type GenericErrHttpResponsePayload = io.TypeOf<GenericErrHttpResponsePayloadCodec>
+export type GenericErrHttpResponsePayloadCodec = ReturnType<
+  typeof errHttpResponsePayload
+>
+export type GenericErrHttpResponsePayload = io.TypeOf<
+  GenericErrHttpResponsePayloadCodec
+>
 
-export const errHttpResponsePayloadOfType = <TErr extends HttpErrorCodec>(error: TErr) => {
+export const errHttpResponsePayloadOfType = <TErr extends HttpErrorCodec>(
+  error: TErr
+) => {
   return errHttpResponsePayload(error)
 }
 
@@ -99,8 +105,12 @@ export const httpResponsePayload = <
   err: TErrCodec
 ) => io.union([ok, err])
 
-export type GenericHttpResponsePayloadCodec = ReturnType<typeof httpResponsePayload>
-export type GenericHttpResponsePayload = io.TypeOf<GenericHttpResponsePayloadCodec>
+export type GenericHttpResponsePayloadCodec = ReturnType<
+  typeof httpResponsePayload
+>
+export type GenericHttpResponsePayload = io.TypeOf<
+  GenericHttpResponsePayloadCodec
+>
 
 export const anyHttpResponsePayload = <
   TOkCodec extends AnyOkHttpResponsePayloadCodec,
@@ -110,5 +120,7 @@ export const anyHttpResponsePayload = <
   err: TErrCodec
 ) => io.union([ok, err])
 
-export type AnyHttpResponsePayloadCodec = ReturnType<typeof anyHttpResponsePayload>
+export type AnyHttpResponsePayloadCodec = ReturnType<
+  typeof anyHttpResponsePayload
+>
 export type AnyHttpResponsePayload = io.TypeOf<AnyHttpResponsePayloadCodec>

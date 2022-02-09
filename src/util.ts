@@ -22,14 +22,19 @@ export const isPayloadOfCodec = <C extends io.Mixed>(
   return isRight(c.decode(payload))
 }
 
-export const isResourceFailureHandledError = (e: unknown): e is ResourceFailureHandledError =>
+export const isResourceFailureHandledError = (
+  e: unknown
+): e is ResourceFailureHandledError =>
   isPayloadOfCodec(resourceFailureHandledError, e)
 export const isBadEncodingError = (e: unknown): e is BadEncodingError =>
   isPayloadOfCodec(badEncodingError, e)
 export const isBadRequestError = (e: unknown): e is BadRequestError =>
   isPayloadOfCodec(badRequestError, e)
 
-export const emptyRequest = io.union([io.undefined, io.null, io.void, io.type({})])
+export const emptyRequest = io.union(
+  [io.undefined, io.null, io.void, io.type({})],
+  'EmptyRequest'
+)
 
 const record = <KS extends io.KeyofC<any>, T extends io.Any>(
   k: KS,
@@ -37,12 +42,17 @@ const record = <KS extends io.KeyofC<any>, T extends io.Any>(
 ): Record<keyof KS['keys'], T> => map<KS, T>(() => type)(k.keys) as any
 
 export const getValidationErrorCodec = <M extends FormModelCodec>(model: M) =>
-  io.type({
-    type: io.literal('ValidationErrors'),
-    content: io.type({
-      fields: io.partial(record(io.keyof(model), io.union([io.string, io.undefined])))
-    })
-  })
+  io.type(
+    {
+      type: io.literal('ValidationErrors'),
+      content: io.type({
+        fields: io.partial(
+          record(io.keyof(model), io.union([io.string, io.undefined]))
+        )
+      })
+    },
+    'GetValidationErrorCodec'
+  )
 
 // export type ValidationError = io.TypeOf<ReturnType<typeof getValidationErrorCodec>>;
 export type ValidationError<M extends FormModelKeysMap> = {
@@ -53,18 +63,24 @@ export type ValidationError<M extends FormModelKeysMap> = {
 }
 
 export const withPaginatorRequest = <TCodec extends io.Mixed>(codec: TCodec) =>
-  io.partial({
-    pageIndex: io.number,
-    pageSize: io.number,
-    query: codec
-  })
+  io.partial(
+    {
+      pageIndex: io.number,
+      pageSize: io.number,
+      query: codec
+    },
+    'WithPaginationRequest'
+  )
 
 export const withPaginatorResponse = <TCodec extends io.Mixed>(codec: TCodec) =>
-  io.type({
-    items: io.array(codec),
-    itemsTotal: io.number,
-    currentIndex: io.number
-  })
+  io.type(
+    {
+      items: io.array(codec),
+      itemsTotal: io.number,
+      currentIndex: io.number
+    },
+    'WithPaginationResponse'
+  )
 
 declare type PaginatorWitoutItems = Omit<
   io.TypeOf<ReturnType<typeof withPaginatorResponse>>,
@@ -82,7 +98,8 @@ export const eitherToResult = <T, E>(either: Either<E, T>): Result<T, E> => {
   return new Ok(either.right)
 }
 
-export const isObject = (m: unknown): m is object => m !== null && typeof m === 'object'
+export const isObject = (m: unknown): m is object =>
+  m !== null && typeof m === 'object'
 
 // Use this to get inherited keys as well
 export const keyInObject = <X extends {}, Y extends PropertyKey>(
