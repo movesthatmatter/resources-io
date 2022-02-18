@@ -101,7 +101,7 @@
   },
   "dependencies": {
     "fp-ts": "^2.8.2",
-    "io-ts": "2.2.10",
+    "io-ts": "2.2.16",
     "io-ts-reporters": "^2.0.0",
     "ts-async-results": "^0.2.0-0",
     "ts-results": "^3.0.0"
