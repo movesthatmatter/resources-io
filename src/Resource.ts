@@ -122,30 +122,44 @@ export class Resource<
         const decoded = responseAsResultCodec.decode(data)
         const result = eitherToResult(decoded)
 
+        // This happens when the Response Data is not encoded properly!
         if (!result.ok) {
           const errorReport = errorReporter.report(decoded)
           const error = new Err({
-            type: 'BadEncodingError',
+            type: 'BadEncodedResponseError',
             content: errorReport
           } as const)
 
-          console.error('[Resource].request() BadEncodingError', {
-            resourceName: this.name,
-            requestPayloadName: this.requestPayloadCodec.name,
-            responseOkPayloadName: this.responseOkPayloadCodec.name,
-            responseErrPayloadName: this.responseErrPayloadCodec.name,
-            error
-          })
+          console.error(
+            '[resources-io] Request received a BadEncodedResponseError',
+            {
+              resourceName: this.name,
+              requestPayloadName: this.requestPayloadCodec.name,
+              responseOkPayloadName: this.responseOkPayloadCodec.name,
+              responseErrPayloadName: this.responseErrPayloadCodec.name,
+              requestPayload,
+              rawResponsePayload: data,
+              error,
+              errorReport
+            }
+          )
 
           return error
         }
 
+        // This happens when the Response Data is encoded properly but the Response is an Err
         if (!result.val.ok) {
           const error = this.getResponseError(result.val)
 
-          console.error('[Resource].request() Response Error', {
+          console.error('[resources-io] Request received an ErrResponse', {
+            resourceName: this.name,
+            requestPayloadName: this.requestPayloadCodec.name,
+            responseOkPayloadName: this.responseOkPayloadCodec.name,
+            responseErrPayloadName: this.responseErrPayloadCodec.name,
+            requestPayload,
+            rawResponsePayload: data,
             error,
-            requestPayloadName: this.requestPayloadCodec.name
+            errorReport: undefined
           })
 
           return error
@@ -164,12 +178,16 @@ export class Resource<
         ) {
           const error = this.getResponseError(e.response.data)
 
-          console.error('[Resource].request() Response Error', {
+          // This usually fails due to network error or other library errors
+          console.error('[resources-io] Request (Network or Library) Failure', {
             resourceName: this.name,
             requestPayloadName: this.requestPayloadCodec.name,
             responseOkPayloadName: this.responseOkPayloadCodec.name,
             responseErrPayloadName: this.responseErrPayloadCodec.name,
-            error
+            requestPayload,
+            rawResponsePayload: e.response.data,
+            error,
+            errorReport: undefined
           })
 
           return error
@@ -180,13 +198,19 @@ export class Resource<
           content: undefined
         } as const)
 
-        console.error('[Resource].request() BadRequestError', {
-          resourceName: this.name,
-          requestPayloadName: this.requestPayloadCodec.name,
-          responseOkPayloadName: this.responseOkPayloadCodec.name,
-          responseErrPayloadName: this.responseErrPayloadCodec.name,
-          error
-        })
+        console.error(
+          '[resources-io] Request was Badly Encoded (BadRequestError)',
+          {
+            resourceName: this.name,
+            requestPayloadName: this.requestPayloadCodec.name,
+            responseOkPayloadName: this.responseOkPayloadCodec.name,
+            responseErrPayloadName: this.responseErrPayloadCodec.name,
+            requestPayload,
+            rawResponsePayload: e,
+            error,
+            errorReport: undefined
+          }
+        )
 
         return error
       }

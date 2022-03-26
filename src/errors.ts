@@ -37,6 +37,16 @@ export const badEncodingError = io.type(
 export type BadEncodingErrorCodec = typeof badEncodingError
 export type BadEncodingError = io.TypeOf<BadEncodingErrorCodec>
 
+export const badEncodedResponseError = io.type(
+  {
+    type: io.literal('BadEncodedResponseError'),
+    content: io.union([io.array(io.string), io.undefined])
+  },
+  'BadEncodedResponseError'
+)
+export type BadEncodedResponseErrorCodec = typeof badEncodedResponseError
+export type BadEncodedResponseError = io.TypeOf<BadEncodedResponseErrorCodec>
+
 export const networkError = io.type(
   {
     type: io.literal('NetworkError'),
@@ -84,11 +94,12 @@ export const commonResponseErrors = io.union(
   [
     badRequestError,
     badEncodingError,
+    badEncodedResponseError,
     badResponseError,
     networkError,
     badErrorEncodingError,
     serverError,
-    resourceInexistentError
+    resourceInexistentError,
   ],
   'commonResponseErrors'
 )
