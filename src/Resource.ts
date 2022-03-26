@@ -83,16 +83,52 @@ export class Resource<
   ResponseOkPayload = io.TypeOf<ResponseOkPayloadCodec>,
   ResponseErrPayload = io.TypeOf<ResponseErrPayloadCodec>
 > {
+  public requestPayloadCodec: RequestPayloadCodec
+  public responseOkPayloadCodec: ResponseOkPayloadCodec
   public responseErrPayloadCodec: ResponseErrPayloadCodec
+  public name?: string
 
   constructor(
-    public requestPayloadCodec: RequestPayloadCodec,
-    public responseOkPayloadCodec: ResponseOkPayloadCodec,
-    responseErrPayloadCodec: ResponseErrPayloadCodec = badRequestError as ResponseErrPayloadCodec,
-    public name?: string
+    requestPayloadCodec: RequestPayloadCodec,
+    responseOkPayloadCodec: ResponseOkPayloadCodec,
+    responseErrPayloadCodec: ResponseErrPayloadCodec
+  )
+  constructor(
+    requestPayloadCodec: RequestPayloadCodec,
+    responseOkPayloadCodec: ResponseOkPayloadCodec,
+    responseErrPayloadCodec: ResponseErrPayloadCodec,
+    name?: string
+  )
+  constructor(
+    requestPayloadCodec: RequestPayloadCodec,
+    responseOkPayloadCodec: ResponseOkPayloadCodec,
+    name?: string
+  )
+  constructor(
+    requestPayloadCodec: RequestPayloadCodec,
+    responseOkPayloadCodec: ResponseOkPayloadCodec,
+    responseErrPayloadCodecOrName: ResponseErrPayloadCodec | string | undefined,
+    name?: string
   ) {
-    this.responseErrPayloadCodec =
-      responseErrPayloadCodec || (badRequestError as ResponseErrPayloadCodec)
+    this.requestPayloadCodec = requestPayloadCodec
+    this.responseOkPayloadCodec = responseOkPayloadCodec
+
+    if (
+      responseErrPayloadCodecOrName &&
+      typeof responseErrPayloadCodecOrName !== 'string'
+    ) {
+      this.responseErrPayloadCodec = responseErrPayloadCodecOrName
+    } else {
+      this.responseErrPayloadCodec = badRequestError as ResponseErrPayloadCodec
+    }
+
+    if (typeof responseErrPayloadCodecOrName === 'string') {
+      this.name = responseErrPayloadCodecOrName
+    }
+
+    if (name) {
+      this.name = name
+    }
   }
 
   private get allPossibleErrorsCodec() {
@@ -103,6 +139,10 @@ export class Resource<
   }
 
   set resourceName(name: string) {
+    this.name = name
+  }
+
+  setName(name: string) {
     this.name = name
   }
 
