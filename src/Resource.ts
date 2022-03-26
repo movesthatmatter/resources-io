@@ -86,7 +86,8 @@ export class Resource<
   constructor(
     public requestPayloadCodec: RequestPayloadCodec,
     public responseOkPayloadCodec: ResponseOkPayloadCodec,
-    public responseErrPayloadCodec: ResponseErrPayloadCodec = badRequestError as ResponseErrPayloadCodec
+    public responseErrPayloadCodec: ResponseErrPayloadCodec = badRequestError as ResponseErrPayloadCodec,
+    public name?: string
   ) {}
 
   private get allPossibleErrorsCodec() {
@@ -128,11 +129,13 @@ export class Resource<
             content: errorReport
           } as const)
 
-          console.error('[Resource].request() BadEncodingError', error)
-          console.info(
-            '  [Resource].request() BadEncodingError > Error',
-            errorReport
-          )
+          console.error('[Resource].request() BadEncodingError', {
+            resourceName: this.name,
+            requestPayloadName: this.requestPayloadCodec.name,
+            responseOkPayloadName: this.responseOkPayloadCodec.name,
+            responseErrPayloadName: this.responseErrPayloadCodec.name,
+            error
+          })
 
           return error
         }
@@ -140,8 +143,10 @@ export class Resource<
         if (!result.val.ok) {
           const error = this.getResponseError(result.val)
 
-          console.error('[Resource].request() Response Error', error)
-          console.info('  [Resource].request() Response Error > Result', result)
+          console.error('[Resource].request() Response Error', {
+            error,
+            requestPayloadName: this.requestPayloadCodec.name
+          })
 
           return error
         }
@@ -159,8 +164,13 @@ export class Resource<
         ) {
           const error = this.getResponseError(e.response.data)
 
-          console.error('[Resource].request() Response Error', error)
-          console.info('[Resource].request() Response Error Object', e)
+          console.error('[Resource].request() Response Error', {
+            resourceName: this.name,
+            requestPayloadName: this.requestPayloadCodec.name,
+            responseOkPayloadName: this.responseOkPayloadCodec.name,
+            responseErrPayloadName: this.responseErrPayloadCodec.name,
+            error
+          })
 
           return error
         }
@@ -170,8 +180,13 @@ export class Resource<
           content: undefined
         } as const)
 
-        console.error('[Resource].request() BadRequestError', error)
-        console.info('[Resource].request() BadRequestError', error)
+        console.error('[Resource].request() BadRequestError', {
+          resourceName: this.name,
+          requestPayloadName: this.requestPayloadCodec.name,
+          responseOkPayloadName: this.responseOkPayloadCodec.name,
+          responseErrPayloadName: this.responseErrPayloadCodec.name,
+          error
+        })
 
         return error
       }
