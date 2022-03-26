@@ -97,6 +97,10 @@ export class Resource<
     )
   }
 
+  set resourceName(name: string) {
+    this.name = name
+  }
+
   request(
     requestPayload: RequestPayload,
     senderFn: (requestPayload: RequestPayload) => Promise<{ data: unknown }>
