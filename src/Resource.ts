@@ -83,12 +83,17 @@ export class Resource<
   ResponseOkPayload = io.TypeOf<ResponseOkPayloadCodec>,
   ResponseErrPayload = io.TypeOf<ResponseErrPayloadCodec>
 > {
+  public responseErrPayloadCodec: ResponseErrPayloadCodec
+
   constructor(
     public requestPayloadCodec: RequestPayloadCodec,
     public responseOkPayloadCodec: ResponseOkPayloadCodec,
-    public responseErrPayloadCodec: ResponseErrPayloadCodec = badRequestError as ResponseErrPayloadCodec,
+    responseErrPayloadCodec: ResponseErrPayloadCodec = badRequestError as ResponseErrPayloadCodec,
     public name?: string
-  ) {}
+  ) {
+    this.responseErrPayloadCodec =
+      responseErrPayloadCodec || (badRequestError as ResponseErrPayloadCodec)
+  }
 
   private get allPossibleErrorsCodec() {
     return io.union(
