@@ -106,3 +106,11 @@ export const keyInObject = <X extends {}, Y extends PropertyKey>(
   obj: X,
   prop: Y
 ): obj is X & Record<Y, unknown> => prop in obj
+
+export const toPrettyPrint = (o: unknown) => {
+  if (isObject(o)) {
+    return JSON.stringify(o, null, 2)
+  }
+
+  return o;
+};

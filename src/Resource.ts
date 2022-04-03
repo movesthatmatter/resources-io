@@ -19,6 +19,7 @@ import {
   keyInObject
 } from './util'
 import errorReporter from 'io-ts-reporters'
+import { toPrettyPrint } from 'src'
 
 type BaseRequestPayloadCodec = io.Mixed
 type BaseResponseOkPayloadCodec = io.Mixed
@@ -186,9 +187,9 @@ export class Resource<
               requestPayloadName: this.requestPayloadCodec.name,
               responseOkPayloadName: this.responseOkPayloadCodec.name,
               responseErrPayloadName: this.responseErrPayloadCodec.name,
-              requestPayload,
-              rawResponsePayload: data,
-              error,
+              requestPayload: toPrettyPrint(requestPayload),
+              rawResponsePayload: toPrettyPrint(data),
+              error: toPrettyPrint(error),
               errorReport
             }
           )
@@ -205,9 +206,9 @@ export class Resource<
             requestPayloadName: this.requestPayloadCodec.name,
             responseOkPayloadName: this.responseOkPayloadCodec.name,
             responseErrPayloadName: this.responseErrPayloadCodec.name,
-            requestPayload,
-            rawResponsePayload: data,
-            error,
+            requestPayload: toPrettyPrint(requestPayload),
+            rawResponsePayload: toPrettyPrint(data),
+            error: toPrettyPrint(error),
             errorReport: undefined
           })
 
@@ -233,9 +234,9 @@ export class Resource<
             requestPayloadName: this.requestPayloadCodec.name,
             responseOkPayloadName: this.responseOkPayloadCodec.name,
             responseErrPayloadName: this.responseErrPayloadCodec.name,
-            requestPayload,
-            rawResponsePayload: e.response.data,
-            error,
+            requestPayload: toPrettyPrint(requestPayload),
+            rawResponsePayload: toPrettyPrint(e.response.data),
+            error: toPrettyPrint(error),
             errorReport: undefined
           })
 
@@ -254,9 +255,9 @@ export class Resource<
             requestPayloadName: this.requestPayloadCodec.name,
             responseOkPayloadName: this.responseOkPayloadCodec.name,
             responseErrPayloadName: this.responseErrPayloadCodec.name,
-            requestPayload,
-            rawResponsePayload: e,
-            error,
+            requestPayload: toPrettyPrint(requestPayload),
+            rawResponsePayload: toPrettyPrint(e),
+            error: toPrettyPrint(error),
             errorReport: undefined
           }
         )
