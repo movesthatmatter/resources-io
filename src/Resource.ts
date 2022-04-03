@@ -21,6 +21,8 @@ import {
   toPrettyPrint
 } from './util'
 import errorReporter from 'io-ts-reporters'
+import { isLeft } from 'fp-ts/lib/Either'
+import { decodedToResult } from 'src'
 
 type BaseRequestPayloadCodec = io.Mixed
 type BaseResponseOkPayloadCodec = io.Mixed
@@ -171,7 +173,8 @@ export class Resource<
         )
 
         const decoded = responseAsResultCodec.decode(data)
-        const result = eitherToResult(decoded)
+        // const result =  eitherToResult(decoded)
+        const result =  decodedToResult(decoded)
 
         // This happens when the Response Data is not encoded properly!
         if (!result.ok) {
@@ -181,7 +184,7 @@ export class Resource<
             content: errorReport
           } as const)
 
-          const drawnError = D.draw(result.unwrap());
+          const drawnError = D.draw(result.val);
 
           console.error(
             '[resources-io] Request received a BadEncodedResponseError',

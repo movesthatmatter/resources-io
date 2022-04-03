@@ -8,9 +8,11 @@ import {
 } from './errors'
 import { FormModelCodec, FormModelKeysMap } from './http'
 import * as io from 'io-ts'
+import { Validation } from 'io-ts'
 import { Either, isLeft, isRight } from 'fp-ts/lib/Either'
 import { map } from 'fp-ts/lib/Record'
 import { Err, Ok, Result } from 'ts-results'
+import { DecodeError } from 'io-ts/lib/Decoder'
 
 // This is needed for being part of the same namespace!
 export * from './types'
@@ -90,12 +92,21 @@ export declare type PaginatedResponse<TType> = PaginatorWitoutItems & {
   items: TType[]
 }
 
-export const eitherToResult = <T, E>(either: Either<E, T>): Result<T, E> => {
+export const eitherToResult = <T, E>(
+  either: Either<E, T>
+): Result<T, E> => {
   if (isLeft(either)) {
     return new Err(either.left)
   }
 
   return new Ok(either.right)
+}
+
+export const decodedToResult = <A>(
+  a: Validation<A>
+): Result<A, DecodeError> => {
+  // TODO: is this needed to be casted?
+  return eitherToResult(a as any)
 }
 
 export const isObject = (m: unknown): m is object =>
@@ -112,5 +123,5 @@ export const toPrettyPrint = (o: unknown) => {
     return JSON.stringify(o, null, 2)
   }
 
-  return o;
-};
+  return o
+}
