@@ -192,8 +192,8 @@ export class Resource<
               requestPayload: toPrettyPrint(requestPayload),
               rawResponsePayload: toPrettyPrint(data),
               error: toPrettyPrint(error),
-              errorReport,
-              structuralErrorReport
+              errorReport: toPrettyPrint(errorReport),
+              structuralErrorReport: toPrettyPrint(structuralErrorReport),
             }
           )
 
