@@ -92,21 +92,12 @@ export declare type PaginatedResponse<TType> = PaginatorWitoutItems & {
   items: TType[]
 }
 
-export const eitherToResult = <T, E>(
-  either: Either<E, T>
-): Result<T, E> => {
+export const eitherToResult = <T, E>(either: Either<E, T>): Result<T, E> => {
   if (isLeft(either)) {
     return new Err(either.left)
   }
 
   return new Ok(either.right)
-}
-
-export const decodedToResult = <A>(
-  a: Validation<A>
-): Result<A, DecodeError> => {
-  // TODO: is this needed to be casted?
-  return eitherToResult(a as any)
 }
 
 export const isObject = (m: unknown): m is object =>

@@ -1394,6 +1394,11 @@
   dependencies:
     "@octokit/openapi-types" "^11.2.0"
 
+"@pavelkucera/io-ts-structural-error-reporter@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@pavelkucera/io-ts-structural-error-reporter/-/io-ts-structural-error-reporter-0.1.1.tgz#e8930466d8a4727747dce40f5d6e7fc95be69db5"
+  integrity sha512-VOaAmfMq3ZK1v9XMWcvvqPHFGGYQ/cxwqA+ag19taJFDXWoEYo/Q2hEq+NksKqQe8AwKpcLdteY3/ETlx0ZBow==
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.1.tgz#a21117b19ee9be70c379ec1877537ef2e1c63301"

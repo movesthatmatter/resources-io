@@ -100,6 +100,7 @@
     "typescript": "4.0.2"
   },
   "dependencies": {
+    "@pavelkucera/io-ts-structural-error-reporter": "^0.1.1",
     "fp-ts": "^2.8.2",
     "io-ts": "2.2.16",
     "io-ts-reporters": "^2.0.0",
