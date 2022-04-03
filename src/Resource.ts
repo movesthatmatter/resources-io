@@ -18,11 +18,10 @@ import {
   eitherToResult,
   isObject,
   keyInObject,
-  toPrettyPrint
+  toPrettyPrint,
+  decodedToResult
 } from './util'
 import errorReporter from 'io-ts-reporters'
-import { isLeft } from 'fp-ts/lib/Either'
-import { decodedToResult } from 'src'
 
 type BaseRequestPayloadCodec = io.Mixed
 type BaseResponseOkPayloadCodec = io.Mixed
