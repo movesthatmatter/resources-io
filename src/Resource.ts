@@ -16,10 +16,10 @@ import {
   isResourceFailureHandledError,
   eitherToResult,
   isObject,
-  keyInObject
+  keyInObject,
+  toPrettyPrint
 } from './util'
 import errorReporter from 'io-ts-reporters'
-import { toPrettyPrint } from 'src'
 
 type BaseRequestPayloadCodec = io.Mixed
 type BaseResponseOkPayloadCodec = io.Mixed
@@ -173,7 +173,7 @@ export class Resource<
         const result = eitherToResult(decoded)
 
         // This happens when the Response Data is not encoded properly!
-        if (!result.ok) {
+        if (!result.ok) { 
           const errorReport = errorReporter.report(decoded)
           const error = new Err({
             type: 'BadEncodedResponseError',
