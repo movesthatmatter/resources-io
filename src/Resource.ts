@@ -1,4 +1,5 @@
 import * as io from 'io-ts'
+import * as D from 'io-ts/Decoder'
 import { Err, Ok } from 'ts-results'
 import { AsyncResultWrapper, AsyncErr } from 'ts-async-results'
 import {
@@ -173,12 +174,14 @@ export class Resource<
         const result = eitherToResult(decoded)
 
         // This happens when the Response Data is not encoded properly!
-        if (!result.ok) { 
+        if (!result.ok) {
           const errorReport = errorReporter.report(decoded)
           const error = new Err({
             type: 'BadEncodedResponseError',
             content: errorReport
           } as const)
+
+          const drawnError = D.draw(result.unwrap());
 
           console.error(
             '[resources-io] Request received a BadEncodedResponseError',
@@ -190,9 +193,12 @@ export class Resource<
               requestPayload: toPrettyPrint(requestPayload),
               rawResponsePayload: toPrettyPrint(data),
               error: toPrettyPrint(error),
-              errorReport
+              errorReport,
+              drawnError,
             }
           )
+
+          console.error('Drawn Error', drawnError)
 
           return error
         }
